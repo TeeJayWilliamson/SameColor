@@ -1,0 +1,14 @@
+<?xml version = '1.0' encoding = 'UTF-8' ?>
+<widget
+    android-versionCode = '1'
+    id = 'com.TeeJay.SameColor'
+    version = '1.0.0'
+    xmlns = 'https://www.w3.org/ns/widgets'>
+
+    <name>SameColor</name>
+    <description>Match the colors using RGB sliders</description>
+    <author>TeeJay Williamson</author>
+
+    <preference name = 'orientation' value = 'portrait'/>
+
+</widget>
