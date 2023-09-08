@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Matching Game</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        #target-color, #user-color {
+            width: 200px;
+            height: 200px;
+            margin: 20px;
+            border: 1px solid black;
+        }
+        .slider-container {
+            display: flex;
+            align-items: center;
+            position: relative;
+            width: 80%;
+            margin: 10px auto;
+        }
+        .slider {
+            width: 100%;
+        }
+        .slider-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .dot-space {
+            margin-right: 10px;
+        }
+        .red-dot {
+            background-color: red;
+            left: 0;
+        }
+        .green-dot {
+            background-color: green;
+            left: 0;
+        }
+        .blue-dot {
+            background-color: blue;
+            left: 0;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            width: 80%;
+            margin: 10px auto;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 10px; /* Added margin to separate buttons */
+        }
+        p {
+            text-align: center;
+        }
+        .color-squares {
+            display: flex;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Color Matching Game</h1>
+    <div class="color-squares">
+        <div id="target-color"></div>
+        <div id="user-color"></div>
+    </div>
+    <div class="slider-container">
+        <div class="slider-dot red-dot dot-space" id="red-indicator"></div>
+        <input type="range" id="red-slider" min="0" max="255" value="0" class="slider" step="0.1">
+    </div>
+    <div class="slider-container">
+        <div class="slider-dot green-dot dot-space" id="green-indicator"></div>
+        <input type="range" id="green-slider" min="0" max="255" value="0" class="slider" step="0.1">
+    </div>
+    <div class="slider-container">
+        <div class="slider-dot blue-dot dot-space" id="blue-indicator"></div>
+        <input type="range" id="blue-slider" min="0" max="255" value="0" class="slider" step="0.1">
+    </div>
+    <div class="button-container">
+        <button id="check-button">Check Match</button>
+        <button id="reset-button">Reset</button>
+    </div>
+    <div>
+        <p>Similarity: <span id="similarity">0%</span></p>
+        <p>Time: <span id="timer">0 seconds</span></p>
+    </div>
+    <script>
+        const targetColor = document.getElementById("target-color");
+        const userColor = document.getElementById("user-color");
+        const redSlider = document.getElementById("red-slider");
+        const greenSlider = document.getElementById("green-slider");
+        const blueSlider = document.getElementById("blue-slider");
+        const similarityText = document.getElementById("similarity");
+        const timerText = document.getElementById("timer");
+        const checkButton = document.getElementById("check-button");
+        const resetButton = document.getElementById("reset-button");
+        const redDot = document.querySelector(".red-dot");
+        const greenDot = document.querySelector(".green-dot");
+        const blueDot = document.querySelector(".blue-dot");
+        const redIndicator = document.getElementById("red-indicator");
+        const greenIndicator = document.getElementById("green-indicator");
+        const blueIndicator = document.getElementById("blue-indicator");
+
+        let targetRGB = generateRandomRGB();
+        let userRGB = [0, 0, 0];
+        let similarityThreshold = 10;
+        let timer = 0;
+        let timerInterval;
+
+        // Set the initial user color square to black
+        userColor.style.backgroundColor = "black";
+
+        targetColor.style.backgroundColor = `rgb(${targetRGB[0]}, ${targetRGB[1]}, ${targetRGB[2]})`;
+
+        redSlider.addEventListener("input", updateColorDisplay);
+        greenSlider.addEventListener("input", updateColorDisplay);
+        blueSlider.addEventListener("input", updateColorDisplay);
+
+        checkButton.addEventListener("click", checkMatch);
+        resetButton.addEventListener("click", resetGame);
+
+        function updateColorDisplay() {
+            userRGB = [parseFloat(redSlider.value), parseFloat(greenSlider.value), parseFloat(blueSlider.value)];
+            userColor.style.backgroundColor = `rgb(${userRGB[0]}, ${userRGB[1]}, ${userRGB[2]})`;
+        }
+
+        function checkMatch() {
+            const similarity = calculateSimilarity(targetRGB, userRGB);
+            similarityText.textContent = `${similarity.toFixed(2)}%`;
+
+            // Adjust the step size based on the slider's range
+            const stepSize = 1; // You can adjust this as needed
+
+            const redPosition = ((targetRGB[0] - redSlider.min) / (redSlider.max - redSlider.min)) * 100;
+            const greenPosition = ((targetRGB[1] - greenSlider.min) / (greenSlider.max - greenSlider.min)) * 100;
+            const bluePosition = ((targetRGB[2] - blueSlider.min) / (blueSlider.max - blueSlider.min)) * 100;
+
+            redIndicator.style.left = `${redPosition}%`;
+            greenIndicator.style.left = `${greenPosition}%`;
+            blueIndicator.style.left = `${bluePosition}%`;
+
+            if (similarity >= similarityThreshold) {
+                clearInterval(timerInterval);
+            }
+        }
+
+        function resetGame() {
+            targetRGB = generateRandomRGB();
+            targetColor.style.backgroundColor = `rgb(${targetRGB[0]}, ${targetRGB[1]}, ${targetRGB[2]})`;
+            updateColorDisplay();
+            similarityText.textContent = "0%";
+            timer = 0;
+            clearInterval(timerInterval);
+
+            // Reset user color square to black
+            userColor.style.backgroundColor = "black";
+
+            redIndicator.style.left = "0%";
+            greenIndicator.style.left = "0%";
+            blueIndicator.style.left = "0%";
+
+            redSlider.value = 0;
+            greenSlider.value = 0;
+            blueSlider.value = 0;
+
+            startTimer();
+        }
+
+        function generateRandomRGB() {
+            return [Math.floor(Math.random() * 256), Math.floor(Math.random() * 256), Math.floor(Math.random() * 256)];
+        }
+
+        function calculateSimilarity(color1, color2) {
+            const deltaR = color1[0] - color2[0];
+            const deltaG = color1[1] - color2[1];
+            const deltaB = color1[2] - color2[2];
+            const distance = Math.sqrt(deltaR ** 2 + deltaG ** 2 + deltaB ** 2);
+            return Math.max(0, 100 - (distance / 255 * 100));
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timer++;
+                timerText.textContent = `${timer} seconds`;
+            }, 1000);
+        }
+
+        startTimer();
+    </script>
+</body>
+</html>
