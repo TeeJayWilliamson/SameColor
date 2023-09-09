@@ -6,6 +6,7 @@
     <title>RGB ColorCraze</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.4/nouislider.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.4/nouislider.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Bowlby+One+SC" />
     <style>
         body {
             display: flex;
@@ -37,6 +38,7 @@
         .slider {
             margin-left: 30px;
             width: 100%;
+            margin-top: 25px;
             background-color: #ddd; /* Light gray slider track */
         }
         .slider-dot {
@@ -129,6 +131,10 @@
             box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5); /* Add a subtle shadow */
             transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s, border 0.3s; /* Add transitions */
         }
+        #stats{
+            font-family: 'Bowlby One SC', sans-serif;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -153,7 +159,7 @@
         <button id="check-button">Check Match</button>
         <button id="reset-button">Reset</button>
     </div>
-    <div>
+    <div id="stats">
         <p>Similarity: <span id="similarity">0%</span></p>
         <p>Time: <span id="timer">0 seconds</span></p>
     </div>
