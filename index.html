@@ -83,11 +83,17 @@
             margin: 20px; /* Add margin for spacing */
             justify-content: space-between; /* To separate the colored squares */
         }
-            /* Custom style for the slider handle with transparency */
-    .slider .noUi-handle {
-        background-color: rgba(87, 87, 87, 0.705); /* Red handle with 70% opacity */
-    }
-    
+
+        /* Custom style for the slider handle with increased size */
+        .slider .noUi-handle {
+            background-color: rgba(87, 87, 87, 0.705); /* Red handle with 70% opacity */
+            top: 50%; /* Center the handle vertically */
+            transform: translate(0, -07%); /* Center the handle horizontally */
+        }
+        .slider {
+            height:25px;
+        }
+
     </style>
 </head>
 <body>
@@ -144,15 +150,15 @@
 
         targetColor.style.backgroundColor = `rgb(${targetRGB[0]}, ${targetRGB[1]}, ${targetRGB[2]})`;
 
-        // Initialize noUiSlider for the red slider
-        noUiSlider.create(redSlider, {
-            start: 0,
-            range: {
-                min: 0,
-                max: 255
-            },
-            step: 0.01
-        });
+// Initialize noUiSlider for the red slider
+noUiSlider.create(redSlider, {
+    start: 0,
+    range: {
+        min: 0,
+        max: 255
+    },
+    step: 0.01,
+});
 
         // Initialize noUiSlider for the green slider
         noUiSlider.create(greenSlider, {
