@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Same Color</title>
+    <title>RGB ColorCraze</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.4/nouislider.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.4/nouislider.min.js"></script>
     <style>
@@ -14,16 +14,17 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            background-color: #f0f0f0;
-            background-image: url(CrumpledPaper.png);
-            background-size: cover;
-            overflow: hidden; /* Prevent scrolling */
+            background-image: url(BG.jpg);
+                }
+        h1 {
+            color: #333; /* Dark gray header text */
+            font-family: 'Arial', sans-serif; /* Use a modern font */
         }
         #target-color, #user-color {
             width: 200px;
             height: 200px;
             margin: 20px;
-            border: 1px solid black;
+            border: 1px solid #333; /* Dark border */
         }
         .slider-container {
             display: flex;
@@ -33,8 +34,9 @@
             margin: 10px auto;
         }
         .slider {
-            margin-left: 25px;
+            margin-left: 30px;
             width: 100%;
+            background-color: #ddd; /* Light gray slider track */
         }
         .slider-dot {
             width: 10px;
@@ -47,17 +49,26 @@
         .dot-space {
             margin-right: 10px;
         }
+        .red-dot, .green-dot, .blue-dot {
+            width: 20px; /* Increase dot size */
+            height: 20px; /* Increase dot size */
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5); /* Add a subtle shadow */
+        }
         .red-dot {
             background-color: red;
-            z-index: 1; /* Add this line to adjust the stacking order */
+            z-index: 1;
         }
         .green-dot {
             background-color: green;
-            z-index: 1; /* Add this line to adjust the stacking order */
+            z-index: 1;
         }
         .blue-dot {
             background-color: blue;
-            z-index: 1; /* Add this line to adjust the stacking order */
+            z-index: 1;
         }
         .button-container {
             display: flex;
@@ -66,38 +77,46 @@
             margin: 10px auto;
         }
         button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #007BFF;
-            color: white;
+            padding: 12px 24px; /* Adjust button padding for better spacing */
+            font-size: 18px; /* Increase button text size */
+            background-color: #007bff; /* Blue button */
+            color: #fff; /* White text on buttons */
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin: 0 10px; /* Added margin to separate buttons */
+            margin: 0 10px;
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s; /* Add transitions */
+        }
+        button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+            transform: scale(1.05); /* Slightly scale up on hover */
         }
         p {
             text-align: center;
+            font-size: 24px; /* Increase font size for text */
+            line-height: 1.5; /* Improve line spacing for readability */
         }
         .color-squares {
             display: flex;
-            margin: 20px; /* Add margin for spacing */
-            justify-content: space-between; /* To separate the colored squares */
+            background-color: rgba(255, 255, 255, 0.726);
+            margin: 20px;
+            justify-content: space-between;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow to color squares */
+            transition: box-shadow 0.3s; /* Add transition for color squares */
         }
-
-        /* Custom style for the slider handle with increased size */
+        /* Customize the slider handle with box shadow */
         .slider .noUi-handle {
-            background-color: rgba(87, 87, 87, 0.705); /* Red handle with 70% opacity */
-            top: 50%; /* Center the handle vertically */
-            transform: translate(0, -07%); /* Center the handle horizontally */
+            background-color: rgba(87, 87, 87, 0.705);
+            top: 50%;
+            transform: translate(0, -25%);
+            border: 2px solid #333; /* Dark border for the handle */
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5); /* Add a subtle shadow */
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s, border 0.3s; /* Add transitions */
         }
-        .slider {
-            height:25px;
-        }
-
     </style>
 </head>
 <body>
-    <h1>Same Color</h1>
+    <h1>RGB ColorCraze</h1>
     <div class="color-squares">
         <div id="target-color"></div>
         <div id="user-color"></div>
