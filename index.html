@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Same Color</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.4/nouislider.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.4/nouislider.min.js"></script>
     <style>
         body {
             display: flex;
@@ -31,6 +33,7 @@
             margin: 10px auto;
         }
         .slider {
+            margin-left: 25px;
             width: 100%;
         }
         .slider-dot {
@@ -46,15 +49,15 @@
         }
         .red-dot {
             background-color: red;
-            left: 0;
+            z-index: 1; /* Add this line to adjust the stacking order */
         }
         .green-dot {
             background-color: green;
-            left: 0;
+            z-index: 1; /* Add this line to adjust the stacking order */
         }
         .blue-dot {
             background-color: blue;
-            left: 0;
+            z-index: 1; /* Add this line to adjust the stacking order */
         }
         .button-container {
             display: flex;
@@ -80,6 +83,15 @@
             margin: 20px; /* Add margin for spacing */
             justify-content: space-between; /* To separate the colored squares */
         }
+            /* Custom style for the slider handle with transparency */
+    .slider .noUi-handle {
+        background-color: rgba(87, 87, 87, 0.705); /* Red handle with 70% opacity */
+    }
+
+    /* Additional custom styles for the slider, if needed */
+    .slider {
+        /* Add any other slider styles here */
+    }
     </style>
 </head>
 <body>
@@ -90,15 +102,15 @@
     </div>
     <div class="slider-container">
         <div class="slider-dot red-dot dot-space" id="red-indicator"></div>
-        <input type="range" id="red-slider" min="0" max="255" value="0" class="slider" step="0.1">
+        <div id="red-slider" class="slider"></div>
     </div>
     <div class="slider-container">
         <div class="slider-dot green-dot dot-space" id="green-indicator"></div>
-        <input type="range" id="green-slider" min="0" max="255" value="0" class="slider" step="0.1">
+        <div id="green-slider" class="slider"></div>
     </div>
     <div class="slider-container">
         <div class="slider-dot blue-dot dot-space" id="blue-indicator"></div>
-        <input type="range" id="blue-slider" min="0" max="255" value="0" class="slider" step="0.1">
+        <div id="blue-slider" class="slider"></div>
     </div>
     <div class="button-container">
         <button id="check-button">Check Match</button>
@@ -136,6 +148,54 @@
 
         targetColor.style.backgroundColor = `rgb(${targetRGB[0]}, ${targetRGB[1]}, ${targetRGB[2]})`;
 
+        // Initialize noUiSlider for the red slider
+        noUiSlider.create(redSlider, {
+            start: 0,
+            range: {
+                min: 0,
+                max: 255
+            },
+            step: 0.01
+        });
+
+        // Initialize noUiSlider for the green slider
+        noUiSlider.create(greenSlider, {
+            start: 0,
+            range: {
+                min: 0,
+                max: 255
+            },
+            step: 0.01
+        });
+
+        // Initialize noUiSlider for the blue slider
+        noUiSlider.create(blueSlider, {
+            start: 0,
+            range: {
+                min: 0,
+                max: 255
+            },
+            step: 0.01
+        });
+
+        // Update the user color when redSlider value changes
+        redSlider.noUiSlider.on("update", function (values, handle) {
+            userRGB[0] = parseFloat(values[handle]);
+            updateColorDisplay();
+        });
+
+        // Update the user color when greenSlider value changes
+        greenSlider.noUiSlider.on("update", function (values, handle) {
+            userRGB[1] = parseFloat(values[handle]);
+            updateColorDisplay();
+        });
+
+        // Update the user color when blueSlider value changes
+        blueSlider.noUiSlider.on("update", function (values, handle) {
+            userRGB[2] = parseFloat(values[handle]);
+            updateColorDisplay();
+        });
+
         redSlider.addEventListener("input", updateColorDisplay);
         greenSlider.addEventListener("input", updateColorDisplay);
         blueSlider.addEventListener("input", updateColorDisplay);
@@ -144,7 +204,6 @@
         resetButton.addEventListener("click", resetGame);
 
         function updateColorDisplay() {
-            userRGB = [parseFloat(redSlider.value), parseFloat(greenSlider.value), parseFloat(blueSlider.value)];
             userColor.style.backgroundColor = `rgb(${userRGB[0]}, ${userRGB[1]}, ${userRGB[2]})`;
         }
 
@@ -153,11 +212,16 @@
             similarityText.textContent = `${similarity.toFixed(2)}%`;
 
             // Adjust the step size based on the slider's range
-            const stepSize = 1; // You can adjust this as needed
+            const stepSize = .01; // You can adjust this as needed
 
-            const redPosition = ((targetRGB[0] - redSlider.min) / (redSlider.max - redSlider.min)) * 100;
-            const greenPosition = ((targetRGB[1] - greenSlider.min) / (greenSlider.max - greenSlider.min)) * 100;
-            const bluePosition = ((targetRGB[2] - blueSlider.min) / (blueSlider.max - blueSlider.min)) * 100;
+            const redPosition = ((targetRGB[0] - redSlider.noUiSlider.options.range.min) /
+                (redSlider.noUiSlider.options.range.max - redSlider.noUiSlider.options.range.min)) * 100;
+
+            const greenPosition = ((targetRGB[1] - greenSlider.noUiSlider.options.range.min) /
+                (greenSlider.noUiSlider.options.range.max - greenSlider.noUiSlider.options.range.min)) * 100;
+
+            const bluePosition = ((targetRGB[2] - blueSlider.noUiSlider.options.range.min) /
+                (blueSlider.noUiSlider.options.range.max - blueSlider.noUiSlider.options.range.min)) * 100;
 
             redIndicator.style.left = `${redPosition}%`;
             greenIndicator.style.left = `${greenPosition}%`;
@@ -171,7 +235,6 @@
         function resetGame() {
             targetRGB = generateRandomRGB();
             targetColor.style.backgroundColor = `rgb(${targetRGB[0]}, ${targetRGB[1]}, ${targetRGB[2]})`;
-            updateColorDisplay();
             similarityText.textContent = "0%";
             timer = 0;
             clearInterval(timerInterval);
@@ -183,9 +246,10 @@
             greenIndicator.style.left = "0%";
             blueIndicator.style.left = "0%";
 
-            redSlider.value = 0;
-            greenSlider.value = 0;
-            blueSlider.value = 0;
+            // Reset the sliders
+            redSlider.noUiSlider.set(0);
+            greenSlider.noUiSlider.set(0);
+            blueSlider.noUiSlider.set(0);
 
             startTimer();
         }
