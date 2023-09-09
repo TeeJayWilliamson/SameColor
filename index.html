@@ -6,8 +6,6 @@
     <title>RGB ColorCraze</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.4/nouislider.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.4/nouislider.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Bowlby+One+SC" />
-
     <style>
         body {
             display: flex;
@@ -99,6 +97,8 @@
             font-size: 24px; /* Increase font size for text */
             line-height: 1.5; /* Improve line spacing for readability */
         }
+        
+        /* Add responsiveness for color-squares */
         .color-squares {
             display: flex;
             background-color: rgba(255, 255, 255, 0.726);
@@ -107,6 +107,16 @@
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Add shadow to color squares */
             transition: box-shadow 0.3s; /* Add transition for color squares */
         }
+        
+        /* Media query for screens with a maximum width of 768px (typical mobile devices) */
+        @media screen and (max-width: 768px) {
+            /* Adjust the color squares size for mobile devices */
+            .color-squares {
+                flex-direction: row; /* Keep them side by side */
+                width: 80%; /* You can adjust this value as needed */
+            }
+        }
+        
         /* Customize the slider handle with box shadow */
         .slider .noUi-handle {
             background-color: rgba(87, 87, 87, 0.705);
@@ -115,10 +125,6 @@
             border: 2px solid #333; /* Dark border for the handle */
             box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5); /* Add a subtle shadow */
             transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s, border 0.3s; /* Add transitions */
-        }
-        #stats{
-            color: #fff;
-            font-family: 'bowlby one sc', sans-serif;
         }
     </style>
 </head>
@@ -144,7 +150,7 @@
         <button id="check-button">Check Match</button>
         <button id="reset-button">Reset</button>
     </div>
-    <div id="stats">
+    <div>
         <p>Similarity: <span id="similarity">0%</span></p>
         <p>Time: <span id="timer">0 seconds</span></p>
     </div>
