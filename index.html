@@ -6,6 +6,8 @@
     <title>RGB ColorCraze</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.4/nouislider.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.6.4/nouislider.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Bowlby+One+SC" />
+
     <style>
         body {
             display: flex;
@@ -14,8 +16,9 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            background-image: url(BG.jpg);
-                }
+            /* background-image: url(CrumpledPaper.png); */
+            background-color: black;
+        }
         h1 {
             color: #333; /* Dark gray header text */
             font-family: 'Arial', sans-serif; /* Use a modern font */
@@ -113,10 +116,14 @@
             box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5); /* Add a subtle shadow */
             transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s, border 0.3s; /* Add transitions */
         }
+        #stats{
+            color: #fff;
+            font-family: 'bowlby one sc', sans-serif;
+        }
     </style>
 </head>
 <body>
-    <h1>RGB ColorCraze</h1>
+    <img class="logo" src="logo.png" alt="RGB ColorCraze">
     <div class="color-squares">
         <div id="target-color"></div>
         <div id="user-color"></div>
@@ -137,7 +144,7 @@
         <button id="check-button">Check Match</button>
         <button id="reset-button">Reset</button>
     </div>
-    <div>
+    <div id="stats">
         <p>Similarity: <span id="similarity">0%</span></p>
         <p>Time: <span id="timer">0 seconds</span></p>
     </div>
