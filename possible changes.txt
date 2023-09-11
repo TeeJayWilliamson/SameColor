@@ -15,18 +15,23 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
-            background: rgb(255, 255, 255);
+            background: rgb(0, 0, 0);
+            background: linear-gradient(180deg, rgba(0, 0, 0, 1) 25%, rgba(255, 255, 255, 1) 93%);
         }
+
         h1 {
             color: #333;
             font-family: 'Arial', sans-serif;
         }
-        #target-color, #user-color {
+
+        #target-color,
+        #user-color {
             width: 200px;
             height: 200px;
             margin: 20px;
             border: 1px solid #333;
         }
+
         .slider-container {
             display: flex;
             align-items: center;
@@ -34,12 +39,14 @@
             width: 80%;
             margin: 10px auto;
         }
+
         .slider {
-            margin-left: 0px;
+            margin-left: 30px;
             width: 100%;
             margin-top: 25px;
             background-color: #ffffff;
         }
+
         .slider-dot {
             width: 10px;
             height: 10px;
@@ -48,10 +55,14 @@
             top: 50%;
             transform: translate(-50%, -50%);
         }
+
         .dot-space {
             margin-right: 10px;
         }
-        .red-dot, .green-dot, .blue-dot {
+
+        .red-dot,
+        .green-dot,
+        .blue-dot {
             width: 15px;
             height: 15px;
             border-radius: 50%;
@@ -60,24 +71,29 @@
             transform: translate(-50%, -50%);
             box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
         }
+
         .red-dot {
             background-color: red;
             z-index: 1;
         }
+
         .green-dot {
             background-color: green;
             z-index: 1;
         }
+
         .blue-dot {
             background-color: blue;
             z-index: 1;
         }
+
         .button-container {
             display: flex;
             justify-content: center;
             width: 80%;
             margin: 10px auto;
         }
+
         button {
             padding: 12px 24px;
             font-size: 18px;
@@ -89,16 +105,19 @@
             margin: 0 10px;
             transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
         }
+
         button:hover {
             background-color: #0056b3;
             transform: scale(1.05);
         }
+
         p {
             text-align: center;
             font-size: 24px;
             line-height: 1.5;
         }
-        
+
+        /* Add responsiveness for color-squares */
         .color-squares {
             display: flex;
             background-color: rgba(255, 255, 255, 0.897);
@@ -106,18 +125,66 @@
             justify-content: space-between;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
             transition: box-shadow 0.3s;
+            width: 90%;
         }
-        
+
+        /* Style the white box */
+        .white-box {
+            background-color: white;
+            align-content: center;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            width: 25%;
+        }
+
+        /* Media query for screens with a maximum width of 768px (typical mobile devices) */
         @media screen and (max-width: 768px) {
-            .color-squares {
-                flex-direction: row;
-                width: 90%;
+            /* Adjust the white box width for mobile devices */
+            .white-box {
+                width: 80%;
+                
             }
+
+            /* Adjust the color squares size for mobile devices */
+            #target-color,
+            #user-color {
+                width: 100px;
+                height: 100px;
+                margin: 20px;
+                border: 1px solid #333;
+            }
+
+            /* Center align the logo for mobile devices */
             .logo {
                 max-width: 80%;
+                margin: 0 auto;
+            }
+
+            /* Stack color squares and sliders for mobile devices */
+            .color-squares {
+            display: flex;
+            background-color: rgba(255, 255, 255, 0.897);
+            margin-left: 50px;
+            justify-content: space-between;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s;
+            width: 75%;
+            }
+
+            /* Adjust the sliders width for mobile devices */
+            .slider {
+                width: 90%;
+            }
+
+            /* Center align buttons for mobile devices */
+            .button-container {
+                flex-direction: column;
+                align-items: center;
             }
         }
-        
+
+        /* Customize the slider handle with box shadow */
         .slider .noUi-handle {
             background-color: rgba(34, 34, 34, 0.63);
             top: 50%;
@@ -126,65 +193,49 @@
             box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
             transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s, border 0.3s;
         }
+
         #stats {
             font-family: 'Bowlby One SC', sans-serif;
             color: black;
         }
 
-                /* Styles for the popup messages */
-                .popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #fff;
-            padding: 20px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            z-index: 999;
-        }
-
-        /* Styles for the close button in the popup */
-        .popup .close-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            cursor: pointer;
+        .logo{
+            margin-top: 10%;
         }
     </style>
 </head>
 <body>
-    <img class="logo" src="logo.png" alt="RGB ColorCraze">
-
-
     
-    <div class="color-squares">
-        <div id="target-color"></div>
-        <div id="user-color"></div>
+        <img class="logo" src="logo.png" alt="RGB ColorCraze">
+
+        <div class="white-box">
+        <div class="color-squares">
+            <div class="color-box" id="target-color"></div>
+            <div class="color-box" id="user-color"></div>
+        </div>
+
+        <div class="slider-container">
+            <div class="slider-dot red-dot dot-space" id="red-indicator"></div>
+            <div id="red-slider" class="slider"></div>
+        </div>
+        <div class="slider-container">
+            <div class="slider-dot green-dot dot-space" id="green-indicator"></div>
+            <div id="green-slider" class="slider"></div>
+        </div>
+        <div class="slider-container">
+            <div class="slider-dot blue-dot dot-space" id="blue-indicator"></div>
+            <div id="blue-slider" class="slider"></div>
+        </div>
     </div>
-    <div class="slider-container">
-        <div class="slider-dot red-dot dot-space" id="red-indicator"></div>
-        <div id="red-slider" class="slider"></div>
-    </div>
-    <div class="slider-container">
-        <div class="slider-dot green-dot dot-space" id="green-indicator"></div>
-        <div id="green-slider" class="slider"></div>
-    </div>
-    <div class="slider-container">
-        <div class="slider-dot blue-dot dot-space" id="blue-indicator"></div>
-        <div id="blue-slider" class="slider"></div>
-    </div>
+
     <div class="button-container">
         <button id="check-button">Check Match</button>
         <button id="reset-button">Reset</button>
     </div>
-
-    
     <div id="stats">
         <p>Similarity: <span id="similarity">0%</span></p>
+        <p>Time: <span id="timer">0 seconds</span></p>
     </div>
-    <p>Time: <span id="timer">0 seconds</span></p>
-    <p id="secret">.</p>
     <script>
         const targetColor = document.getElementById("target-color");
         const userColor = document.getElementById("user-color");
@@ -202,35 +253,17 @@
         const greenIndicator = document.getElementById("green-indicator");
         const blueIndicator = document.getElementById("blue-indicator");
 
-    // Add a click event listener to the "secret" label
-    const secretLabel = document.getElementById("secret");
-    secretLabel.addEventListener("click", togglePerfectMatch);
-
-    function togglePerfectMatch() {
-        // Calculate the perfect match values based on the target color
-        const perfectRed = targetRGB[0];
-        const perfectGreen = targetRGB[1];
-        const perfectBlue = targetRGB[2];
-
-        // Set the slider positions to achieve a 100% match
-        redSlider.noUiSlider.set(perfectRed);
-        greenSlider.noUiSlider.set(perfectGreen);
-        blueSlider.noUiSlider.set(perfectBlue);
-    }
-
-
-    
         let targetRGB = generateRandomRGB();
         let userRGB = [0, 0, 0];
         let similarityThreshold = 10;
         let timer = 0;
         let timerInterval;
-    
+
         // Set the initial user color square to black
         userColor.style.backgroundColor = "black";
-    
-        targetColor.style.backgroundColor = rgb(${targetRGB[0]}, ${targetRGB[1]}, ${targetRGB[2]});
-    
+
+        targetColor.style.backgroundColor = `rgb(${targetRGB[0]}, ${targetRGB[1]}, ${targetRGB[2]})`;
+
         // Initialize noUiSlider for the red slider
         noUiSlider.create(redSlider, {
             start: 0,
@@ -238,9 +271,9 @@
                 min: 0,
                 max: 255
             },
-            step: 0.0001,
+            step: 0.01,
         });
-    
+
         // Initialize noUiSlider for the green slider
         noUiSlider.create(greenSlider, {
             start: 0,
@@ -248,9 +281,9 @@
                 min: 0,
                 max: 255
             },
-            step: 0.0001
+            step: 0.01
         });
-    
+
         // Initialize noUiSlider for the blue slider
         noUiSlider.create(blueSlider, {
             start: 0,
@@ -258,105 +291,105 @@
                 min: 0,
                 max: 255
             },
-            step: 0.0001
+            step: 0.01
         });
-    
+
         // Update the user color when redSlider value changes
         redSlider.noUiSlider.on("update", function (values, handle) {
             userRGB[0] = parseFloat(values[handle]);
             updateColorDisplay();
         });
-    
+
         // Update the user color when greenSlider value changes
         greenSlider.noUiSlider.on("update", function (values, handle) {
             userRGB[1] = parseFloat(values[handle]);
             updateColorDisplay();
         });
-    
+
         // Update the user color when blueSlider value changes
         blueSlider.noUiSlider.on("update", function (values, handle) {
             userRGB[2] = parseFloat(values[handle]);
             updateColorDisplay();
         });
-    
+
         redSlider.addEventListener("input", updateColorDisplay);
         greenSlider.addEventListener("input", updateColorDisplay);
         blueSlider.addEventListener("input", updateColorDisplay);
-    
+
         checkButton.addEventListener("click", checkMatch);
         resetButton.addEventListener("click", resetGame);
-    
+
         function updateColorDisplay() {
-            userColor.style.backgroundColor = rgb(${userRGB[0]}, ${userRGB[1]}, ${userRGB[2]});
+            userColor.style.backgroundColor = `rgb(${userRGB[0]}, ${userRGB[1]}, ${userRGB[2]})`;
         }
-    
+
         function checkMatch() {
-    const similarity = calculateSimilarity(targetRGB, userRGB);
-    similarityText.textContent = ${similarity.toFixed(2)}%;
+            const similarity = calculateSimilarity(targetRGB, userRGB);
+            similarityText.textContent = `${similarity.toFixed(2)}%`;
 
-    const redPosition = ((targetRGB[0] - redSlider.noUiSlider.options.range.min) /
-        (redSlider.noUiSlider.options.range.max - redSlider.noUiSlider.options.range.min)) * 100;
+            // Adjust the step size based on the slider's range
+            const stepSize = .01; // You can adjust this as needed
 
-    const greenPosition = ((targetRGB[1] - greenSlider.noUiSlider.options.range.min) /
-        (greenSlider.noUiSlider.options.range.max - greenSlider.noUiSlider.options.range.min)) * 100;
+            const redPosition = ((targetRGB[0] - redSlider.noUiSlider.options.range.min) /
+                (redSlider.noUiSlider.options.range.max - redSlider.noUiSlider.options.range.min)) * 100;
 
-    const bluePosition = ((targetRGB[2] - blueSlider.noUiSlider.options.range.min) /
-        (blueSlider.noUiSlider.options.range.max - blueSlider.noUiSlider.options.range.min)) * 100;
+            const greenPosition = ((targetRGB[1] - greenSlider.noUiSlider.options.range.min) /
+                (greenSlider.noUiSlider.options.range.max - greenSlider.noUiSlider.options.range.min)) * 100;
 
-    redIndicator.style.left = ${redPosition}%;
-    greenIndicator.style.left = ${greenPosition}%;
-    blueIndicator.style.left = ${bluePosition}%;
+            const bluePosition = ((targetRGB[2] - blueSlider.noUiSlider.options.range.min) /
+                (blueSlider.noUiSlider.options.range.max - blueSlider.noUiSlider.options.range.min)) * 100;
 
-    if (similarity >= similarityThreshold) {
-        clearInterval(timerInterval);
-    }
-}
+            redIndicator.style.left = `${redPosition}%`;
+            greenIndicator.style.left = `${greenPosition}%`;
+            blueIndicator.style.left = `${bluePosition}%`;
 
+            if (similarity >= similarityThreshold) {
+                clearInterval(timerInterval);
+            }
+        }
 
-    
         function resetGame() {
             targetRGB = generateRandomRGB();
-            targetColor.style.backgroundColor = rgb(${targetRGB[0]}, ${targetRGB[1]}, ${targetRGB[2]});
+            targetColor.style.backgroundColor = `rgb(${targetRGB[0]}, ${targetRGB[1]}, ${targetRGB[2]})`;
             similarityText.textContent = "0%";
             timer = 0;
             clearInterval(timerInterval);
-    
+
             // Reset user color square to black
             userColor.style.backgroundColor = "black";
-    
+
             redIndicator.style.left = "0%";
             greenIndicator.style.left = "0%";
             blueIndicator.style.left = "0%";
-    
+
             // Reset the sliders
             redSlider.noUiSlider.set(0);
             greenSlider.noUiSlider.set(0);
-            blueSlider.noUiSlider.set(0); 
-    
+            blueSlider.noUiSlider.set(0);
+
             startTimer();
         }
-    
+
         function generateRandomRGB() {
             return [Math.floor(Math.random() * 256), Math.floor(Math.random() * 256), Math.floor(Math.random() * 256)];
         }
-    
+
         function calculateSimilarity(color1, color2) {
             const deltaR = color1[0] - color2[0];
             const deltaG = color1[1] - color2[1];
             const deltaB = color1[2] - color2[2];
-            const distance = Math.sqrt(deltaR * 2 + deltaG * 2 + deltaB ** 2);
+            const distance = Math.sqrt(deltaR ** 2 + deltaG ** 2 + deltaB ** 2);
             return Math.max(0, 100 - (distance / 255 * 100));
         }
-    
+
         function startTimer() {
             timerInterval = setInterval(() => {
                 timer++;
-                timerText.textContent = ${timer} seconds;
+                timerText.textContent = `${timer} seconds`;
             }, 1000);
         }
-    
+
         startTimer();
     </script>
-    
 </body>
 </html>
