@@ -229,7 +229,7 @@
         // Set the initial user color square to black
         userColor.style.backgroundColor = "black";
     
-        targetColor.style.backgroundColor = rgb(${targetRGB[0]}, ${targetRGB[1]}, ${targetRGB[2]});
+        targetColor.style.backgroundColor = `rgb(${targetRGB[0]}, ${targetRGB[1]}, ${targetRGB[2]})`;
     
         // Initialize noUiSlider for the red slider
         noUiSlider.create(redSlider, {
@@ -287,12 +287,12 @@
         resetButton.addEventListener("click", resetGame);
     
         function updateColorDisplay() {
-            userColor.style.backgroundColor = rgb(${userRGB[0]}, ${userRGB[1]}, ${userRGB[2]});
+            userColor.style.backgroundColor = `rgb(${userRGB[0]}, ${userRGB[1]}, ${userRGB[2]})`;
         }
     
         function checkMatch() {
     const similarity = calculateSimilarity(targetRGB, userRGB);
-    similarityText.textContent = ${similarity.toFixed(2)}%;
+    similarityText.textContent = `${similarity.toFixed(2)}%`;
 
     const redPosition = ((targetRGB[0] - redSlider.noUiSlider.options.range.min) /
         (redSlider.noUiSlider.options.range.max - redSlider.noUiSlider.options.range.min)) * 100;
@@ -303,9 +303,9 @@
     const bluePosition = ((targetRGB[2] - blueSlider.noUiSlider.options.range.min) /
         (blueSlider.noUiSlider.options.range.max - blueSlider.noUiSlider.options.range.min)) * 100;
 
-    redIndicator.style.left = ${redPosition}%;
-    greenIndicator.style.left = ${greenPosition}%;
-    blueIndicator.style.left = ${bluePosition}%;
+    redIndicator.style.left = `${redPosition}%`;
+    greenIndicator.style.left = `${greenPosition}%`;
+    blueIndicator.style.left = `${bluePosition}%`;
 
     if (similarity >= similarityThreshold) {
         clearInterval(timerInterval);
@@ -316,7 +316,7 @@
     
         function resetGame() {
             targetRGB = generateRandomRGB();
-            targetColor.style.backgroundColor = rgb(${targetRGB[0]}, ${targetRGB[1]}, ${targetRGB[2]});
+            targetColor.style.backgroundColor = `rgb(${targetRGB[0]}, ${targetRGB[1]}, ${targetRGB[2]})`;
             similarityText.textContent = "0%";
             timer = 0;
             clearInterval(timerInterval);
@@ -344,14 +344,14 @@
             const deltaR = color1[0] - color2[0];
             const deltaG = color1[1] - color2[1];
             const deltaB = color1[2] - color2[2];
-            const distance = Math.sqrt(deltaR * 2 + deltaG * 2 + deltaB ** 2);
+            const distance = Math.sqrt(deltaR ** 2 + deltaG ** 2 + deltaB ** 2);
             return Math.max(0, 100 - (distance / 255 * 100));
         }
     
         function startTimer() {
             timerInterval = setInterval(() => {
                 timer++;
-                timerText.textContent = ${timer} seconds;
+                timerText.textContent = `${timer} seconds`;
             }, 1000);
         }
     
