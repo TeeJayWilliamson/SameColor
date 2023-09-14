@@ -1,6 +1,6 @@
 {
-    "name": "Same Color",
-    "short_name": "Same Color",
+    "name": "ColorCraze",
+    "short_name": "ColorCraze",
     "description": "A fun color matching game",
     "start_url": "/",
     "display": "standalone",
