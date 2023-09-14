@@ -55,6 +55,45 @@
             background-color: #0056b3;
             transform: scale(1.05);
         }
+        /* Styles for the lightbox */
+        .lightbox {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .lightbox-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Style for the "Close" button in the lightbox */
+        #close-lightbox {
+            align-self: center;
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        #close-lightbox:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
@@ -62,6 +101,7 @@
         <img class="splash-logo" src="logo3.png" alt="ColorCraze">
         <div class="splash-button-container">
             <button class="splash-button" onclick="startNewGame()">New Game</button>
+            <button class="splash-button" onclick="startFreePlay()">Freeplay</button>
             <button class="splash-button" onclick="showHighscores()">Highscores</button>
         </div>
     </div>
@@ -70,11 +110,46 @@
             // Redirect to the game page or load the game using JavaScript
             window.location.href = "game.html"; // Change the URL to your game page
         }
+
+        function startFreePlay() {
+            // Redirect to the game page or load the game using JavaScript
+            window.location.href = "freeplay.html"; // Change the URL to your game page
+        }
     
         function showHighscores() {
-            // Implement highscores functionality or link to a highscores page
-            alert("Highscores functionality is not implemented yet.");
+            // Create a lightbox container
+            const lightbox = document.createElement("div");
+            lightbox.classList.add("lightbox");
+
+            // Create the content for the lightbox
+            const content = document.createElement("div");
+            content.classList.add("lightbox-content");
+
+            // You can add your highscores content here
+            content.innerHTML = `
+                <h2>Highscores</h2>
+                <ul>
+                    <li>Player 1: 100</li>
+                    <li>Player 2: 90</li>
+                    <li>Player 3: 85</li>
+                    <!-- Add more highscores as needed -->
+                </ul>
+                <button id="close-lightbox">Close</button>
+            `;
+
+            // Add the content to the lightbox
+            lightbox.appendChild(content);
+
+            // Add the lightbox to the document
+            document.body.appendChild(lightbox);
+
+            // Add an event listener to close the lightbox when the "Close" button is clicked
+            const closeButton = document.getElementById("close-lightbox");
+            closeButton.addEventListener("click", () => {
+                document.body.removeChild(lightbox);
+            });
         }
+
     </script>
     </body>
     </html>
