@@ -62,7 +62,7 @@
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        margin: 10px 0; /* This margin applies to individual buttons */
+        margin: 15px 0; /* This margin applies to individual buttons */
         transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
       }
       .splash-button:hover {
@@ -85,6 +85,8 @@
 
       .lightbox-content {
         background: #fff;
+        text-align: center;
+        width: 75%;
         padding: 20px;
         border-radius: 5px;
         box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
@@ -94,7 +96,6 @@
       #close-lightbox {
         align-self: center;
         margin-top: 10px;
-        margin-left: 40%;
         padding: 10px 20px;
         font-size: 16px;
         background-color: #007bff;
@@ -118,8 +119,8 @@
           margin: 0 3px;
         }
         .splash-button {
-        margin: 10px 0; /* This margin applies to individual buttons */
-      }
+          margin: 10px 0; /* This margin applies to individual buttons */
+        }
       }
     </style>
   </head>
@@ -160,7 +161,8 @@
 
         // You can add your highscores content here
         content.innerHTML = `
-                Highscore functionality not implemented yet. Sorry! Check back soon...
+                No highscores yet. <br>
+                Sorry! Check back soon...<br>
                 <button id="close-lightbox">Close</button>
             `;
 
