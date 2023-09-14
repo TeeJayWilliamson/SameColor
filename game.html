@@ -29,7 +29,7 @@
       }
       /* Add CSS styles for the back button */
       #back-button {
-        position: fixed;
+        position: absolute;
         top: 1px; /* Adjust the top position as needed */
         left: 10px; /* Adjust the left position as needed */
         padding: 10px;
@@ -248,7 +248,7 @@
     <div id="stats">
       <p>Similarity: <span id="similarity">0%</span></p>
     </div>
-    <p>Time: <span id="timer">100 seconds</span></p>
+    <p>Time: <span id="timer">60 seconds</span></p>
     <p id="secret">.</p>
     <script>
       const targetColor = document.getElementById("target-color");
@@ -286,7 +286,7 @@
       let targetRGB = generateRandomRGB();
       let userRGB = [0, 0, 0];
       let similarityThreshold = 100;
-      let timer = 100; // Updated initial timer value to 100 seconds
+      let timer = 60; // Updated initial timer value to 100 seconds
       let timerInterval;
       let answerVisible = false; // Add a flag to track whether the answer is visible
       let roundsPlayed = 0;
@@ -393,13 +393,13 @@
         greenIndicator.style.left = `${greenPosition}%`;
         blueIndicator.style.left = `${bluePosition}%`;
 
-        // Show the result for 5 seconds
+        // Show the result for 2 seconds
         answerVisible = true;
         setTimeout(() => {
           answerVisible = false;
           resetSlidersAndChangeColor();
           startTimer();
-        }, 2500);
+        }, 2000);
       }
 
       function displayResult(message) {
@@ -438,9 +438,9 @@
         resetSlidersAndChangeColor();
 
         // Reset timer
-        timer = 100;
+        timer = 60;
         clearInterval(timerInterval);
-        timerText.textContent = "100 seconds";
+        timerText.textContent = "60 seconds";
       }
 
       function generateRandomRGB() {
@@ -480,8 +480,8 @@
       }
 
       function playAgain() {
-        // Reset the timer to 100 seconds
-        timer = 100;
+        // Reset the timer to 60 seconds
+        timer = 60;
 
         // Reset other game-related variables and elements
         resetGame();
