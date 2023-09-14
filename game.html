@@ -293,6 +293,8 @@
       let roundsPlayed = 0;
       let matchesMade = 0;
       let totalSimilarity = 0;
+      let isButtonDisabled = false;
+
 
       // Set the initial user color square to black
       userColor.style.backgroundColor = "black";
@@ -448,19 +450,27 @@
       }
 
       function startTimer() {
-        timerInterval = setInterval(() => {
-          if (timer > 0) {
-            timer--;
-            timerText.textContent = `${timer} seconds`;
-          } else {
-            // Time is up, calculate the user's score
-            const score = calculateScore();
-            // Display "Game Over" lightbox with score
-            displayLightbox(`Good job! Try again!`, score);
-            clearInterval(timerInterval);
-          }
-        }, 1000);
-      }
+  // Disable the "Check Match" button when the timer starts
+  checkButton.disabled = true;
+
+  timerInterval = setInterval(() => {
+    if (timer > 0) {
+      timer--;
+      timerText.textContent = `${timer} seconds`;
+    } else {
+      // Time is up, calculate the user's score
+      const score = calculateScore();
+      // Display "Game Over" lightbox with score
+      displayLightbox(`Good job! Try again!`, score);
+      clearInterval(timerInterval);
+    }
+  }, 1000);
+
+  // Allow the button to be clicked again after a 1-second delay
+  setTimeout(() => {
+    checkButton.disabled = false;
+  }, 2000);
+}
 
       function calculateScore(matchesMade, totalSimilarity) {
         // Define weights for matches and similarity
