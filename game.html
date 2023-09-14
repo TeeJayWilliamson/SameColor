@@ -159,6 +159,7 @@
       #stats {
         font-family: "Bowlby One SC", sans-serif;
         color: black;
+        margin-bottom: -50px;
       }
 
       /* Styles for the popup messages */
@@ -461,20 +462,12 @@
         }, 1000);
       }
 
-      function calculateScore(matchesMade, totalSimilarity) {
-        // Define weights for matches and similarity
-        const matchWeight = 25; // 25 points per match
-        const similarityWeight = 1; // 1 point per percentage similarity
+      function calculateScore(totalSimilarity) {
+  // Calculate the score as the sum of the percentages and round to two decimal places
+  const score = totalSimilarity.toFixed(2);
+  return score;
+}
 
-        // Calculate the score as a weighted sum
-        const score =
-          matchesMade * matchWeight + totalSimilarity * similarityWeight;
-
-        // Round the score to 2 decimal places
-        const roundedScore = score.toFixed(2);
-
-        return roundedScore;
-      }
 
       function playAgain() {
         // Reset the timer to 60 seconds
