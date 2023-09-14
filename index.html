@@ -80,6 +80,7 @@
         #close-lightbox {
             align-self: center;
             margin-top: 10px;
+            margin-left: 40%;
             padding: 10px 20px;
             font-size: 16px;
             background-color: #007bff;
@@ -126,7 +127,9 @@
             content.classList.add("lightbox-content");
 
             // You can add your highscores content here
-            content.innerHTML = `
+            content.innerHTML = 
+            'Highscore functionality not implemented yet. Sorry! Check back soon...<button id="close-lightbox">Close</button>'
+            /*`
                 <h2>Highscores</h2>
                 <ul>
                     <li>Player 1: 100</li>
@@ -135,7 +138,8 @@
                     <!-- Add more highscores as needed -->
                 </ul>
                 <button id="close-lightbox">Close</button>
-            `;
+            `*/
+            ;
 
             // Add the content to the lightbox
             lightbox.appendChild(content);
