@@ -290,6 +290,8 @@
       let timerInterval;
       let answerVisible = false; // Add a flag to track whether the answer is visible
       let roundsPlayed = 0;
+      let matchesMade = 0;
+      let totalSimilarity = 0;
 
       // Set the initial user color square to black
       userColor.style.backgroundColor = "black";
@@ -393,6 +395,10 @@
         greenIndicator.style.left = `${greenPosition}%`;
         blueIndicator.style.left = `${bluePosition}%`;
 
+        // Update the number of matches and total similarity
+        matchesMade++;
+        totalSimilarity += similarity;
+
         // Show the result for 2 seconds
         answerVisible = true;
         setTimeout(() => {
@@ -402,38 +408,19 @@
         }, 2000);
       }
 
-      function displayResult(message) {
-        // Display the result message for 5 seconds
-        const resultElement = document.createElement("div");
-        resultElement.textContent = message;
-        document.body.appendChild(resultElement);
-        setTimeout(function () {
-          document.body.removeChild(resultElement);
-          // Reset sliders and change color after 5 seconds
-          resetSlidersAndChangeColor();
-          // Resume the timer
-          startTimer();
-        }, 5000);
-      }
-
-      function resetSlidersAndChangeColor() {
-        // Reset the sliders to their initial state
-        redSlider.noUiSlider.set(0);
-        greenSlider.noUiSlider.set(0);
-        blueSlider.noUiSlider.set(0);
-
-        // Generate and display a new color on the left
-        targetRGB = generateRandomRGB();
-        targetColor.style.backgroundColor = `rgb(${targetRGB[0]}, ${targetRGB[1]}, ${targetRGB[2]})`;
-
-        // Reset similarity text
-        similarityText.textContent = "0%";
-
-        // Start the timer again
-        startTimer();
+      function displayScore() {
+        const averageSimilarity = totalSimilarity / matchesMade;
+        const message = `Matches Made: ${matchesMade}, Average Similarity: ${averageSimilarity.toFixed(
+          2
+        )}%`;
+        displayLightbox(message);
       }
 
       function resetGame() {
+        // Reset the number of matches and total similarity
+        matchesMade = 0;
+        totalSimilarity = 0;
+
         // Reset sliders and change color
         resetSlidersAndChangeColor();
 
@@ -465,18 +452,28 @@
             timer--;
             timerText.textContent = `${timer} seconds`;
           } else {
-            // Time is up, display "Game Over" lightbox with score
-            const score = calculateScore(); // Calculate the user's score (you can define this function)
-            displayLightbox(`Game Over! Your Score is ${score}`);
+            // Time is up, calculate the user's score
+            const score = calculateScore();
+            // Display "Game Over" lightbox with score
+            displayLightbox(`Good job! Try again!`, score);
             clearInterval(timerInterval);
           }
         }, 1000);
       }
 
-      function calculateScore() {
-        // Define your scoring logic here based on game performance
-        // For now, you can use a placeholder score
-        return roundsPlayed * 100; // Placeholder: Score based on the number of rounds played
+      function calculateScore(matchesMade, totalSimilarity) {
+        // Define weights for matches and similarity
+        const matchWeight = 25; // 25 points per match
+        const similarityWeight = 1; // 1 point per percentage similarity
+
+        // Calculate the score as a weighted sum
+        const score =
+          matchesMade * matchWeight + totalSimilarity * similarityWeight;
+
+        // Round the score to 2 decimal places
+        const roundedScore = score.toFixed(2);
+
+        return roundedScore;
       }
 
       function playAgain() {
@@ -490,13 +487,22 @@
         startTimer();
       }
 
-      function displayLightbox(message) {
+      function displayLightbox(message, score) {
         const lightbox = document.createElement("div");
         lightbox.classList.add("lightbox");
 
         const messageElement = document.createElement("p");
         messageElement.textContent = message;
         lightbox.appendChild(messageElement);
+
+        // Include the score in the lightbox message
+        if (score !== undefined) {
+          const scoreElement = document.createElement("p");
+          // Call calculateScore with the correct arguments
+          const calculatedScore = calculateScore(matchesMade, totalSimilarity);
+          scoreElement.textContent = `Score: ${calculatedScore}`;
+          lightbox.appendChild(scoreElement);
+        }
 
         const playAgainButton = document.createElement("button");
         playAgainButton.textContent = "Play Again";
@@ -508,7 +514,6 @@
 
         document.body.appendChild(lightbox);
       }
-
       function resetDots() {
         redIndicator.style.left = "0%";
         greenIndicator.style.left = "0%";
