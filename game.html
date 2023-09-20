@@ -34,7 +34,7 @@
       h1 {
         color: #333;
         font-family: "Arial", sans-serif;
-      } 
+      }
       #target-color,
       #user-color {
         width: 200px;
@@ -97,7 +97,8 @@
       }
       button {
         padding: 12px 24px;
-        font-size: 18px;
+        font-size: 15px;
+        width: 40%;
         background-color: #007bff;
         color: #fff;
         border: none;
@@ -164,6 +165,7 @@
       .lightbox button {
         padding: 12px 24px;
         font-size: 18px;
+        width: 50%;
         background-color: #007bff;
         color: #fff;
         border: none;
@@ -176,6 +178,19 @@
         background-color: #0056b3;
         transform: scale(1.05);
       }
+
+      .lightbox p {
+        white-space: pre-line;
+      }
+
+      .lightbox-content {
+        background: rgba(0, 0, 0, 0.7);
+        padding: 20px; /* Add padding for better readability */
+        width: 75%;
+        border-radius: 5px; /* Optional: Add rounded corners */
+        color: white; /* Set text color to white for better contrast */
+      }
+
       @media screen and (max-width: 768px) {
         body {
           height: 100%;
@@ -266,6 +281,7 @@
       let matchesMade = 0;
       let totalSimilarity = 0;
       let isButtonDisabled = false;
+      let matchPercentages = []; // Store the match percentages
 
       // Set the initial user color square to black
       userColor.style.backgroundColor = "black";
@@ -347,6 +363,9 @@
         const similarity = calculateSimilarity(targetRGB, userRGB);
         similarityText.textContent = `${similarity.toFixed(2)}%`;
 
+        // Add the match percentage to the array
+        matchPercentages.push(similarity.toFixed(2));
+
         const redPosition =
           ((targetRGB[0] - redSlider.noUiSlider.options.range.min) /
             (redSlider.noUiSlider.options.range.max -
@@ -383,11 +402,19 @@
       }
 
       function displayScore() {
-        const averageSimilarity = totalSimilarity / matchesMade;
-        const message = `Matches Made: ${matchesMade}, Average Similarity: ${averageSimilarity.toFixed(
-          2
-        )}%`;
-        displayLightbox(message);
+        let scoreMessage = `Matches Made: ${matchesMade}\n\n`;
+
+        for (let i = 0; i < matchesMade; i++) {
+          scoreMessage += `Match ${i + 1} - ${matchPercentages[i]}%\n`;
+        }
+
+        let totalScore = matchPercentages.reduce(
+          (acc, percentage) => acc + parseFloat(percentage),
+          0
+        );
+
+        scoreMessage += `\nScore: ${totalScore.toFixed(2)}`;
+        displayLightbox(scoreMessage);
       }
 
       function resetGame() {
@@ -430,9 +457,7 @@
             timerText.textContent = `${timer} seconds`;
           } else {
             // Time is up, calculate the user's score
-            const score = calculateScore();
-            // Display "Game Over" lightbox with score
-            displayLightbox(`Good job! Try again!`, score);
+            displayScore(); // Display the score in the lightbox
             clearInterval(timerInterval);
           }
         }, 1000);
@@ -469,33 +494,36 @@
         startTimer();
       }
 
-      function displayLightbox(message, score) {
-        const lightbox = document.createElement("div");
-        lightbox.classList.add("lightbox");
+      function displayLightbox(message) {
+    const lightbox = document.createElement("div");
+    lightbox.classList.add("lightbox");
 
-        const messageElement = document.createElement("p");
-        messageElement.textContent = message;
-        lightbox.appendChild(messageElement);
+    // Create a div for the content with a darker background
+    const content = document.createElement("div");
+    content.classList.add("lightbox-content");
 
-        // Include the score in the lightbox message
-        if (score !== undefined) {
-          const scoreElement = document.createElement("p");
-          // Call calculateScore with the correct arguments
-          const calculatedScore = calculateScore(matchesMade, totalSimilarity);
-          scoreElement.textContent = `Score: ${calculatedScore}`;
-          lightbox.appendChild(scoreElement);
-        }
+    // Replace newline characters with <br> tags in the message
+    message = message.replace(/\n/g, "<br>");
 
-        const playAgainButton = document.createElement("button");
-        playAgainButton.textContent = "Play Again";
-        playAgainButton.addEventListener("click", () => {
-          document.body.removeChild(lightbox);
-          playAgain();
-        });
-        lightbox.appendChild(playAgainButton);
+    const messageElement = document.createElement("p");
+    messageElement.innerHTML = message;
 
-        document.body.appendChild(lightbox);
-      }
+    content.appendChild(messageElement);
+
+    const playAgainButton = document.createElement("button");
+    playAgainButton.textContent = "Play Again";
+    playAgainButton.addEventListener("click", () => {
+        document.body.removeChild(lightbox);
+        playAgain();
+    });
+
+    content.appendChild(playAgainButton);
+    lightbox.appendChild(content);
+
+    document.body.appendChild(lightbox);
+}
+
+
       function resetDots() {
         redIndicator.style.left = "0%";
         greenIndicator.style.left = "0%";
@@ -517,7 +545,7 @@
 
         // Reset similarity text
         similarityText.textContent = "0%";
-      } 
+      }
 
       // Start the timer again
       startTimer();

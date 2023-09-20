@@ -107,7 +107,8 @@
       }
       button {
         padding: 12px 24px;
-        font-size: 18px;
+        font-size: 15px;
+        width: 40%;
         background-color: #007bff;
         color: #fff;
         border: none;
@@ -191,7 +192,6 @@
       <p>Similarity: <span id="similarity">0%</span></p>
     </div>
     <p>Time: <span id="timer">0 seconds</span></p>
-    <p id="secret">.</p>
     <script>
       const targetColor = document.getElementById("target-color");
       const userColor = document.getElementById("user-color");
@@ -209,9 +209,6 @@
       const greenIndicator = document.getElementById("green-indicator");
       const blueIndicator = document.getElementById("blue-indicator");
 
-      // Add a click event listener to the "secret" label
-      const secretLabel = document.getElementById("secret");
-      secretLabel.addEventListener("click", togglePerfectMatch);
 
       function togglePerfectMatch() {
         // Calculate the perfect match values based on the target color
