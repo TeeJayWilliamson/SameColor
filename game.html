@@ -17,6 +17,13 @@
       type="text/css"
       href="//fonts.googleapis.com/css?family=Bowlby+One+SC"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    />
+
     <style>
       body {
         display: flex;
@@ -162,10 +169,16 @@
         margin-bottom: 20px;
       }
 
-      .lightbox button {
+      .lightbox-buttons-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+      }
+
+      .lightbox-button {
         padding: 12px 24px;
         font-size: 18px;
-        width: 50%;
+        width: 45%; /* Adjust the width as needed */
         background-color: #007bff;
         color: #fff;
         border: none;
@@ -189,6 +202,18 @@
         width: 75%;
         border-radius: 5px; /* Optional: Add rounded corners */
         color: white; /* Set text color to white for better contrast */
+      }
+
+      #highscore {
+        display: flex;
+        align-items: center;
+        font-size: 24px;
+        margin-top: 10px;
+        color: black; /* Color for the crown icon */
+      }
+
+      #highscore .fas.fa-crown {
+        margin-right: 10px;
       }
 
       @media screen and (max-width: 768px) {
@@ -241,8 +266,30 @@
       <p>Similarity: <span id="similarity">0%</span></p>
     </div>
     <p>Time: <span id="timer">60 seconds</span></p>
+    <div id="highscore" style="display: flex; align-items: center;">
+      <img src="crown.png" alt="Crown" width="50" height="50" style="margin-right: -8px;">
+      <span style="margin-left: -5px;">High Score:</span>
+      <span id="highscore-value">0</span>
+    </div>
+    
 
     <script>
+      // Function to update the high score text on the page
+      function updateHighScoreText(score) {
+        const highscoreValue = document.getElementById("highscore-value");
+        highscoreValue.textContent = score.toFixed(2);
+      }
+
+      // Function to retrieve the high score from local storage
+      function getHighScore() {
+        const highestScore =
+          parseFloat(localStorage.getItem("highestScore")) || 0;
+        return highestScore;
+      }
+
+      // Call the function to retrieve and display the high score when the page loads
+      updateHighScoreText(getHighScore());
+
       const targetColor = document.getElementById("target-color");
       const userColor = document.getElementById("user-color");
       const redSlider = document.getElementById("red-slider");
@@ -282,12 +329,14 @@
       let totalSimilarity = 0;
       let isButtonDisabled = false;
       let matchPercentages = []; // Store the match percentages
+      let highestScore = parseFloat(localStorage.getItem("highestScore")) || 0;
 
       // Set the initial user color square to black
       userColor.style.backgroundColor = "black";
 
       targetColor.style.backgroundColor = `rgb(${targetRGB[0]}, ${targetRGB[1]}, ${targetRGB[2]})`;
 
+      startTimer();
       // Function to navigate back to index.html
       function goBack() {
         window.location.href = "index.html"; // Change the URL to your index.html page
@@ -401,6 +450,16 @@
         }, 2000);
       }
 
+      // Function to update the high score on the page and in local storage
+      function updateHighScore(score) {
+        highestScore = score;
+        localStorage.setItem("highestScore", highestScore);
+        updateHighScoreText(highestScore); // Update the high score text on the page
+      }
+
+      updateHighScore(highestScore);
+
+      // Function to display the score and check/update the high score
       function displayScore() {
         let scoreMessage = `Matches Made: ${matchesMade}\n\n`;
 
@@ -408,14 +467,40 @@
           scoreMessage += `Match ${i + 1} - ${matchPercentages[i]}%\n`;
         }
 
-        let totalScore = matchPercentages.reduce(
-          (acc, percentage) => acc + parseFloat(percentage),
-          0
-        );
+        // Calculate the score for the current round
+        const totalScore = calculateScore(totalSimilarity);
 
-        scoreMessage += `\nScore: ${totalScore.toFixed(2)}`;
+        // Check if the current round's score is higher than the high score
+        if (totalScore > highestScore) {
+          // Update the high score immediately if a new high score is achieved
+          updateHighScore(totalScore);
+        }
+
+        scoreMessage += `\nScore: ${totalScore}`;
         displayLightbox(scoreMessage);
       }
+
+      // Function to check if the current score is a new high score and update if needed
+      function checkAndUpdateHighScore(currentScore) {
+        if (currentScore > highestScore) {
+          highestScore = currentScore;
+          localStorage.setItem("highestScore", highestScore);
+          updateHighScoreText(highestScore);
+        }
+      }
+
+      // Function to reset the high score
+      function resetHighScore() {
+        highestScore = 0;
+        localStorage.removeItem("highestScore"); // Remove the high score from localStorage
+        updateHighScoreText(); // Update the high score element on the page
+      }
+
+      // Call resetHighScore() to reset the high score (you can do this in a button click event or elsewhere)
+      //resetHighScore();
+
+      // Update the high score element when the page loads
+      updateHighScoreText(highestScore);
 
       function resetGame() {
         // Reset the number of matches and total similarity
@@ -444,7 +529,8 @@
         const deltaG = color1[1] - color2[1];
         const deltaB = color1[2] - color2[2];
         const distance = Math.sqrt(deltaR ** 2 + deltaG ** 2 + deltaB ** 2);
-        return Math.max(0, 100 - (distance / 255) * 100);
+        const similarity = Math.max(0, 100 - (distance / 255) * 100);
+        return similarity;
       }
 
       function startTimer() {
@@ -462,20 +548,18 @@
           }
         }, 1000);
 
-        // Allow the button to be clicked again after a 1-second delay
+        // Allow the button to be clicked again after a 2-second delay
         setTimeout(() => {
           checkButton.disabled = false;
         }, 2000);
       }
 
-      function calculateScore(matchesMade, totalSimilarity) {
-        // Define weights for matches and similarity
-        const matchWeight = 0; // 0 points per match
+      function calculateScore(totalSimilarity) {
+        // Define a weight for similarity
         const similarityWeight = 1; // 1 point per percentage similarity
 
-        // Calculate the score as a weighted sum
-        const score =
-          matchesMade * matchWeight + totalSimilarity * similarityWeight;
+        // Calculate the score based on similarity
+        const score = totalSimilarity * similarityWeight;
 
         // Round the score to 2 decimal places
         const roundedScore = score.toFixed(2);
@@ -487,42 +571,63 @@
         // Reset the timer to 60 seconds
         timer = 60;
 
+        // Remove any existing lightbox
+        const existingLightbox = document.querySelector(".lightbox");
+        if (existingLightbox) {
+          document.body.removeChild(existingLightbox);
+        }
+
         // Reset other game-related variables and elements
         resetGame();
 
         // Start the timer for the new game
         startTimer();
+
+        updateHighScoreText(getHighScore());
       }
 
       function displayLightbox(message) {
-    const lightbox = document.createElement("div");
-    lightbox.classList.add("lightbox");
+        // Remove any existing lightbox
+        const existingLightbox = document.querySelector(".lightbox");
+        if (existingLightbox) {
+          document.body.removeChild(existingLightbox);
+        }
 
-    // Create a div for the content with a darker background
-    const content = document.createElement("div");
-    content.classList.add("lightbox-content");
+        const lightbox = document.createElement("div");
+        lightbox.classList.add("lightbox");
 
-    // Replace newline characters with <br> tags in the message
-    message = message.replace(/\n/g, "<br>");
+        // Create a div for the content with a darker background
+        const content = document.createElement("div");
+        content.classList.add("lightbox-content");
 
-    const messageElement = document.createElement("p");
-    messageElement.innerHTML = message;
+        // Replace newline characters with <br> tags in the message
+        message = message.replace(/\n/g, "<br>");
 
-    content.appendChild(messageElement);
+        const messageElement = document.createElement("p");
+        messageElement.innerHTML = message;
 
-    const playAgainButton = document.createElement("button");
-    playAgainButton.textContent = "Play Again";
-    playAgainButton.addEventListener("click", () => {
-        document.body.removeChild(lightbox);
-        playAgain();
-    });
+        content.appendChild(messageElement);
 
-    content.appendChild(playAgainButton);
-    lightbox.appendChild(content);
+        const playAgainButton = document.createElement("button");
+        playAgainButton.textContent = "Play Again";
+        playAgainButton.addEventListener("click", () => {
+          document.body.removeChild(lightbox);
+          playAgain();
+        });
 
-    document.body.appendChild(lightbox);
-}
+        const homeButton = document.createElement("button");
+        homeButton.textContent = "Home";
+        homeButton.addEventListener("click", () => {
+          window.location.href = "index.html"; // Change the URL to your index.html page
+        });
 
+        content.appendChild(playAgainButton);
+        content.appendChild(homeButton); // Add the "Home" button to the lightbox
+
+        lightbox.appendChild(content);
+
+        document.body.appendChild(lightbox);
+      }
 
       function resetDots() {
         redIndicator.style.left = "0%";
@@ -547,8 +652,8 @@
         similarityText.textContent = "0%";
       }
 
-      // Start the timer again
-      startTimer();
+      // Update the high score text to reflect any changes
+      updateHighScoreText(highestScore);
     </script>
   </body>
 </html>
