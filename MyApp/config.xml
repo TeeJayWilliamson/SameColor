@@ -1,14 +1,19 @@
 <?xml version = '1.0' encoding = 'UTF-8' ?>
 <widget
     android-versionCode = '1'
-    id = 'com.TeeJay.SameColor'
+    id = 'com.TeeJGames.ColorCraze'
     version = '1.0.0'
     xmlns = 'https://www.w3.org/ns/widgets'>
 
-    <name>SameColor</name>
-    <description>Match the colors using RGB sliders</description>
-    <author>TeeJay Williamson</author>
+    <name>Color Craze</name>
+    <description>RGB ColorCraze is a fun and challenging game that tests your color-matching skills. Adjust sliders to match the target color and see how close you can get. Compete for the highest similarity percentage!</description>
+    <author>TeeJGames</author>
 
     <preference name = 'orientation' value = 'portrait'/>
+
+    <preference name="SplashScreenDelay" value="2000" />
+<preference name="AutoHideSplashScreen" value="true" />
+<preference name="AndroidWindowSplashScreenAnimatedIcon" value="resources/splashTemplate.png" />
+<preference name="AndroidWindowSplashScreenBackground" value="#000000" />
 
 </widget>
