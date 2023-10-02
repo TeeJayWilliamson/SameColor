@@ -266,12 +266,17 @@
       <p>Similarity: <span id="similarity">0%</span></p>
     </div>
     <p>Time: <span id="timer">60 seconds</span></p>
-    <div id="highscore" style="display: flex; align-items: center;">
-      <img src="crown.png" alt="Crown" width="50" height="50" style="margin-right: -15px;">
-      <span style="margin-right: 5px;">High Score: </span>
+    <div id="highscore" style="display: flex; align-items: center">
+      <img
+        src="crown.png"
+        alt="Crown"
+        width="50"
+        height="50"
+        style="margin-right: -15px"
+      />
+      <span style="margin-right: 5px">High Score: </span>
       <span id="highscore-value">0</span>
     </div>
-    
 
     <script>
       // Function to update the high score text on the page
@@ -461,10 +466,10 @@
 
       // Function to display the score and check/update the high score
       function displayScore() {
-        let scoreMessage = `Matches Made: ${matchesMade}\n\n`;
+        let scoreMessage = `Matches Made: ${matchesMade}<br><br>`;
 
         for (let i = 0; i < matchesMade; i++) {
-          scoreMessage += `Match ${i + 1} - ${matchPercentages[i]}%\n`;
+          scoreMessage += `Match ${i + 1} - ${matchPercentages[i]}%<br>`;
         }
 
         // Calculate the score for the current round
@@ -476,7 +481,8 @@
           updateHighScore(totalScore);
         }
 
-        scoreMessage += `\nScore: ${totalScore}`;
+        scoreMessage += `<br>Score: ${totalScore}`;
+
         displayLightbox(scoreMessage);
       }
 
@@ -580,6 +586,10 @@
         // Reset other game-related variables and elements
         resetGame();
 
+        // Calculate the score for the current round and display it
+        const currentTotalScore = calculateScore(totalSimilarity);
+        displayScore(currentTotalScore);
+
         // Start the timer for the new game
         startTimer();
 
@@ -615,6 +625,12 @@
           playAgain();
         });
 
+        const shareButton = document.createElement("button");
+        shareButton.textContent = "Share";
+        shareButton.addEventListener("click", () => {
+          copyMatchStatsToClipboard();
+        });
+
         const homeButton = document.createElement("button");
         homeButton.textContent = "Home";
         homeButton.addEventListener("click", () => {
@@ -622,11 +638,93 @@
         });
 
         content.appendChild(playAgainButton);
+        content.appendChild(shareButton);
         content.appendChild(homeButton); // Add the "Home" button to the lightbox
 
         lightbox.appendChild(content);
 
         document.body.appendChild(lightbox);
+      }
+
+      function copyTextToClipboard(text) {
+        // Create a hidden input element
+        const tempInput = document.createElement("input");
+        tempInput.type = "text";
+        tempInput.value = text;
+
+        // Append the input element to the document
+        document.body.appendChild(tempInput);
+
+        // Select and copy the text from the input element
+        tempInput.select();
+        document.execCommand("copy");
+
+        // Remove the temporary input element
+        document.body.removeChild(tempInput);
+      }
+
+      function copyMatchStatsToClipboard() {
+        // Prepare the match stats text
+        let matchStatsText = `Color Craze - Time Attack\n\n`;
+
+        for (let i = 0; i < matchesMade; i++) {
+          const matchNumber = i + 1;
+          const matchPercentage = parseFloat(matchPercentages[i]);
+          let emoji = "🟨"; // Default to a yellow square
+
+          if (matchPercentage < 80) {
+            emoji = "🟥"; // Red square
+          } else if (matchPercentage >= 90) {
+            emoji = "🟩"; // Green square
+          } else if (matchPercentage >= 80) {
+            emoji = "🟨"; // Yellow square
+          }
+
+          matchStatsText += `Match ${matchNumber}: ${emoji} ${matchPercentage.toFixed(
+            2
+          )}%\n`;
+        }
+
+        // Calculate the score for the current round
+        const currentTotalScore = calculateScore(totalSimilarity);
+
+        matchStatsText += `\nScore: ${currentTotalScore}`;
+        matchStatsText += `Think you can beat that? <a href="https://teejaywilliamson.github.io/SameColor/" target="_blank">Prove it!</a>`;
+
+        // Create a temporary textarea element to copy plain text content
+        const tempTextarea = document.createElement("textarea");
+        tempTextarea.style.position = "absolute";
+        tempTextarea.style.left = "-9999px";
+        tempTextarea.style.top = "0";
+        tempTextarea.value = matchStatsText;
+
+        document.body.appendChild(tempTextarea);
+        tempTextarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempTextarea);
+
+        // Create a message element
+        const messageElement = document.createElement("div");
+        messageElement.textContent =
+          "Match stats have been copied to the clipboard!";
+
+        messageElement.style.position = "fixed";
+        messageElement.style.top = "35%";
+        messageElement.style.left = "50%";
+        messageElement.style.transform = "translateX(-50%)";
+        messageElement.style.backgroundColor = "#fff";
+        messageElement.style.color = "#000";
+        messageElement.style.padding = "10px";
+        messageElement.style.borderRadius = "5px";
+        messageElement.style.zIndex = "999";
+
+        // Append the message element to the document
+        document.body.appendChild(messageElement);
+
+        // Automatically remove the message element after 2 seconds
+        setTimeout(() => {
+          document.body.removeChild(messageElement);
+        }, 2000);
       }
 
       function resetDots() {
