@@ -398,11 +398,11 @@ function copyMatchStatsToClipboard() {
     const matchPercentage = parseFloat(matchPercentages[i]);
     let emoji = "🟨"; // Default to a yellow square
 
-    if (matchPercentage < 80) {
+    if (matchPercentage < 75) {
       emoji = "🟥"; // Red square
     } else if (matchPercentage >= 90) {
       emoji = "🟩"; // Green square
-    } else if (matchPercentage >= 80) {
+    } else if (matchPercentage >= 75) {
       emoji = "🟨"; // Yellow square
     }
 
