@@ -183,7 +183,6 @@ function updateHighScore(score) {
 
 updateHighScore(highestScore);
 
-// Function to display the score and check/update the high score
 function displayScore() {
   let scoreMessage = `Matches Made: ${matchesMade}<br><br>`;
 
@@ -202,7 +201,8 @@ function displayScore() {
 
   scoreMessage += `<br>Score: ${totalScore}`;
 
-  displayLightbox(scoreMessage);
+  // Display the score in the lightbox
+  displayLightbox(scoreMessage, true); // Show the overlay
 }
 
 // Function to check if the current score is a new high score and update if needed
@@ -296,32 +296,28 @@ function playAgain() {
   // Reset the timer to 60 seconds
   timer = 60;
 
-  // Remove any existing lightbox
-  const existingLightbox = document.querySelector(".lightbox");
-  if (existingLightbox) {
-    document.body.removeChild(existingLightbox);
-  }
-
   // Reset other game-related variables and elements
   resetGame();
 
   // Calculate the score for the current round and display it
   const currentTotalScore = calculateScore(totalSimilarity);
-  displayScore(currentTotalScore);
+  displayScore(currentTotalScore); // Pass the currentTotalScore
 
-  // Start the timer for the new game
-  startTimer();
-
-  updateHighScoreText(getHighScore());
-}
-
-function displayLightbox(message) {
-  // Remove any existing lightbox
+  // Remove the lightbox
   const existingLightbox = document.querySelector(".lightbox");
   if (existingLightbox) {
     document.body.removeChild(existingLightbox);
   }
 
+  // Remove the blur overlay
+  removeBlurOverlay();
+
+  startTimer();
+
+  updateHighScoreText(getHighScore());
+}
+
+function displayLightbox(message, showOverlay = true) {
   const lightbox = document.createElement("div");
   lightbox.classList.add("lightbox");
 
@@ -332,6 +328,10 @@ function displayLightbox(message) {
   // Replace newline characters with <br> tags in the message
   message = message.replace(/\n/g, "<br>");
 
+  // Wrap "Matches Made" in an h2 element and "Score" in a strong element
+  message = message.replace("Matches Made:", "<strong>Matches Made:</strong>");
+  message = message.replace("Score:", "<strong>Score:</strong>");
+
   const messageElement = document.createElement("p");
   messageElement.innerHTML = message;
 
@@ -341,6 +341,9 @@ function displayLightbox(message) {
   playAgainButton.textContent = "Play Again";
   playAgainButton.addEventListener("click", () => {
     document.body.removeChild(lightbox);
+    if (showOverlay) {
+      removeBlurOverlay(); // Remove the overlay
+    }
     playAgain();
   });
 
@@ -363,13 +366,30 @@ function displayLightbox(message) {
   const buttonContainer = document.querySelector(".button-container");
   buttonContainer.appendChild(shareButton);
 
-  content.appendChild(playAgainButton);        
+  content.appendChild(playAgainButton);
   content.appendChild(homeButton); // Add the "Home" button to the lightbox
   content.appendChild(shareButton);
 
   lightbox.appendChild(content);
 
   document.body.appendChild(lightbox);
+
+  if (showOverlay) {
+    addBlurOverlay(); // Add the overlay
+  }
+}
+
+function addBlurOverlay() {
+  const blurOverlay = document.createElement("div");
+  blurOverlay.classList.add("blur-overlay");
+  document.body.appendChild(blurOverlay);
+}
+
+function removeBlurOverlay() {
+  const blurOverlay = document.querySelector(".blur-overlay");
+  if (blurOverlay) {
+    document.body.removeChild(blurOverlay);
+  }
 }
 
 function copyTextToClipboard(text) {
@@ -428,6 +448,11 @@ function copyMatchStatsToClipboard() {
   document.execCommand("copy");
   document.body.removeChild(tempTextarea);
 
+  // Show a message that the match stats have been copied
+  showCopyMessage();
+}
+
+function showCopyMessage() {
   // Create a message element
   const messageElement = document.createElement("div");
   messageElement.textContent =
@@ -441,7 +466,10 @@ function copyMatchStatsToClipboard() {
   messageElement.style.color = "#000";
   messageElement.style.padding = "10px";
   messageElement.style.borderRadius = "5px";
-  messageElement.style.zIndex = "999";
+  messageElement.style.zIndex = "1001";
+  messageElement.style.border = "2px solid #333"; // You can adjust the border width and color
+  messageElement.style.boxShadow = "0px 0px 10px rgba(0, 0, 0, 0.5)"; // Adjust the shadow as needed
+
 
   // Append the message element to the document
   document.body.appendChild(messageElement);

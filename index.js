@@ -9,6 +9,11 @@ function startFreePlay() {
 }
 
 function showHighscores() {
+  // Create a blur overlay div
+  const blurOverlay = document.createElement("div");
+  blurOverlay.classList.add("blur-overlay");
+  document.body.appendChild(blurOverlay);
+
   // Create a lightbox container
   const lightbox = document.createElement("div");
   lightbox.classList.add("lightbox");
@@ -64,10 +69,14 @@ function showHighscores() {
     // Add the lightbox to the document
     document.body.appendChild(lightbox);
 
-    // Add an event listener to close the lightbox when the "Close" button is clicked
+    // Add an event listener to close the lightbox and remove the blur overlay when the "Close" button is clicked
     const closeButton = document.getElementById("close-lightbox");
     closeButton.addEventListener("click", () => {
       document.body.removeChild(lightbox);
+      document.body.removeChild(blurOverlay); // Remove the blur overlay
     });
   };
 }
+
+
+
