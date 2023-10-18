@@ -503,5 +503,11 @@ function resetSlidersAndChangeColor() {
   similarityText.textContent = "0%";
 }
 
+// Add an event listener to the document for the 'touchmove' event
+document.addEventListener('touchmove', function(event) {
+  event.preventDefault(); // Prevent the default touchmove behavior
+}, { passive: false });
+
+
 // Update the high score text to reflect any changes
 updateHighScoreText(highestScore);
