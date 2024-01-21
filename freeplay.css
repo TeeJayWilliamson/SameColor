@@ -104,7 +104,7 @@ button:hover {
 }
 p {
   text-align: center;
-  font-size: 24px;
+  font-size: 20px;
   line-height: 1.5;
 }
 
@@ -126,7 +126,7 @@ p {
 #closestmatch {
   display: flex;
   align-items: center;
-  font-size: 24px;
+  font-size: 20px;
   color: black; /* Color for the crown icon */
 }
 
