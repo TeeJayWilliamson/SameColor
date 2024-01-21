@@ -164,38 +164,15 @@ p {
   margin-bottom: 20px;
 }
 
-.lightbox-buttons-container {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
 
-.lightbox-button {
-  padding: 12px 24px;
-  font-size: 18px;
-  width: 45%; /* Adjust the width as needed */
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
-}
+
 
 .lightbox button:hover {
   background-color: #0056b3;
   transform: scale(1.05);
 }
 
-/* CSS for the share button */
-.lightbox .share-button {
-  padding: 12px 24px; /* Adjust the padding as needed */
-  font-size: 13px; /* Adjust the font size as needed */
-  /* Adjust width and height as needed to change the size of the share button */
-  width: 85%;
-  border-radius: 5px;
-  margin-top: 5px;
-}
+
 
 .lightbox p {
   white-space: pre-line;
