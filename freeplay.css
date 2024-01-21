@@ -152,4 +152,12 @@ p {
     width: 150px;
     height: 150px;
   }
+  .button-container {
+    width: 100%; /* Make the button container full width */
+    flex-direction: column; /* Align buttons vertically */
+  }
+  button {
+    width: 80%; /* Set the width of the button to 80% */
+    margin: 10px auto; /* Center the button with some margin */
+  }
 }
