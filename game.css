@@ -253,6 +253,6 @@ p {
   }
   button {
     width: 40%; /* Set the width of the button to 80% */
-    margin: 10px auto; /* Center the button with some margin */
+    margin: 10px 10px; /* Center the button with some margin */
   }
 }
