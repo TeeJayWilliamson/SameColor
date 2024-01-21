@@ -31,7 +31,7 @@ h1 {
   max-height: 70vh;
   margin: auto; /* Center horizontally */
   margin-top: 25vh; /* Adjust the top margin to center vertically */
-  padding: 5px;
+  padding: 20px;
   overflow: hidden;
 }
 .splash-button-container {
