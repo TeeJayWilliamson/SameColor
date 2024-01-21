@@ -338,7 +338,7 @@ function displayLightbox(message, showOverlay = true) {
   content.appendChild(messageElement);
 
   const playAgainButton = document.createElement("button");
-  playAgainButton.textContent = "Play Again";
+  playAgainButton.textContent = "Restart";
   playAgainButton.addEventListener("click", () => {
     document.body.removeChild(lightbox);
     if (showOverlay) {
