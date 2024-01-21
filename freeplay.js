@@ -140,13 +140,41 @@ function checkMatch() {
   greenIndicator.style.left = `${greenPosition}%`;
   blueIndicator.style.left = `${bluePosition}%`;
 
-  // Show the answer with the sliders for 3 seconds
+  // Delay for 2 seconds before moving the sliders to the indicator positions
   setTimeout(() => {
-    // Re-enable the "Check Match" button after 3 seconds
-    checkButton.disabled = false;
-    resetGame(); // Perform the reset
-  }, 3000);
+    // Move the sliders to the indicator positions with a slower slide
+    moveSliderToIndicator(redSlider, redIndicator, 2000);
+    moveSliderToIndicator(greenSlider, greenIndicator, 2000);
+    moveSliderToIndicator(blueSlider, blueIndicator, 2000);
+
+    // Show the answer for 3 seconds
+    setTimeout(() => {
+      // Re-enable the "Check Match" button after 3 seconds
+      checkButton.disabled = false;
+      resetGame(); // Perform the reset
+    }, 1500);
+  }, 1500);
 }
+
+function moveSliderToIndicator(slider, indicator, duration) {
+  // Extract the numeric value from the style left property
+  const indicatorPosition = parseFloat(indicator.style.left);
+
+  // Get the slider range and calculate the corresponding slider value
+  const sliderRange = slider.noUiSlider.options.range.max - slider.noUiSlider.options.range.min;
+  const sliderValue = (indicatorPosition / 100) * sliderRange;
+
+  // Set the slider value with a slower transition
+  slider.noUiSlider.updateOptions({
+    animationDuration: duration,
+  });
+  slider.noUiSlider.set(sliderValue);
+}
+
+
+
+
+
 
 function resetGame() {
   targetRGB = generateRandomRGB();
