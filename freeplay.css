@@ -157,7 +157,7 @@ p {
     flex-direction: column; /* Align buttons vertically */
   }
   button {
-    width: 80%; /* Set the width of the button to 80% */
+    width: 95%; /* Set the width of the button to 80% */
     margin: 10px auto; /* Center the button with some margin */
   }
 }
