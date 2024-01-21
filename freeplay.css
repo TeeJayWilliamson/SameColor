@@ -95,7 +95,7 @@ button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin: 0 10px;
+  margin: 0 20px;
   transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
 }
 button:hover {
@@ -154,10 +154,12 @@ p {
   }
   .button-container {
     width: 100%; /* Make the button container full width */
-    flex-direction: column; /* Align buttons vertically */
+    flex-direction: row; /* Align buttons vertically */
+    margin-top: 2px;
+    margin-bottom:-25px;
   }
   button {
-    width: 95%; /* Set the width of the button to 80% */
+    width: 40%; /* Set the width of the button to 80% */
     margin: 10px auto; /* Center the button with some margin */
   }
 }
